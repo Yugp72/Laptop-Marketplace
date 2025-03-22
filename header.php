@@ -11,8 +11,8 @@ echo '
         <a href="#support" class="nav-links">Support</a>
     </nav>
     <div class="box-btn-actions">
-        <button class="btn-action">Sign Up</button>
-        <button class="btn-action">Log In</button>
+        <a href="register.php"><button class="btn-action">Sign Up</button></a>
+        <a href="login.php"><button class="btn-action">Log In</button></a>
     </div>
 </header>';
 ?>
