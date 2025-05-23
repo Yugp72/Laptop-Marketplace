@@ -5,10 +5,10 @@ include '../jwt-login-app/database/db.php';
 $service_key = $_GET['service_key'] ?? 'all';
 
 if ($service_key === 'all') {
-    $sql = "SELECT * FROM service_reviews ORDER BY review_date DESC";
+    $sql = "SELECT * FROM service_reviews";
     $stmt = $conn->prepare($sql);
 } else {
-    $sql = "SELECT * FROM service_reviews WHERE service_key = ? ORDER BY review_date DESC";
+    $sql = "SELECT * FROM service_reviews WHERE service_key = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $service_key);
 }
@@ -25,7 +25,6 @@ while ($row = $result->fetch_assoc()) {
         "service_key" => $row['service_key'],
         "marketplace_username" => $row['marketplace_username'],
         "rating" => (int)$row['rating'],
-        "review_date" => $row['review_date'],
         "review_text" => $row['review_text']
     ];
     $total_reviews++;

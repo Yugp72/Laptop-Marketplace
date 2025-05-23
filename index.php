@@ -73,6 +73,16 @@ session_start();
     </div>
   </section>
 
+  <section id="select-laptop" class="select-laptop-section" style="padding: 40px 20px;">
+    <h2 class="title">View Individual Laptop Page</h2>
+    <div style="max-width: 400px; margin: auto; text-align: center;">
+      <select id="laptopSelector" class="btn-action" style="width: 100%; padding: 10px; font-size: 1rem;">
+        <option value="">-- Select a Laptop --</option>
+      </select>
+      <button onclick="goToLaptopPage()" class="btn-action" style="margin-top: 15px;">View Details</button>
+    </div>
+  </section>
+
   <section id="sell-laptops" class="fourth-section">
     <h2 class="title">Sell Your Laptop on LapCart</h2>
     <p>Want to sell your laptop? Join our marketplace today.</p>
@@ -94,25 +104,43 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("User not logged in.");
   }
 
-  fetch("https://example.com/laptops-data")
-    .then(response => response.text())
-    .then(data => {
+  fetch("https://yug-patel-profile.top/api_services.php")
+    .then(response => response.json())
+    .then(services => {
       const container = document.getElementById("laptop-container");
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(data, "text/html");
-      const items = doc.querySelectorAll(".laptop-item");
+      const dropdown = document.getElementById("laptopSelector");
 
-      items.forEach(item => {
-        const name = item.querySelector(".laptop-name")?.textContent ?? "Unnamed";
-        const imgSrc = item.querySelector("img")?.src ?? "default.jpg";
+      services.forEach(service => {
+        // Grid
         const div = document.createElement("div");
         div.classList.add("box-laptop");
-        div.innerHTML = `<img src="${imgSrc}" alt="${name}"><p>${name}</p>`;
+        div.innerHTML = `
+          <a href="${service.learnMoreUrl}" style="text-decoration: none; color: inherit;">
+            <img src="${service.imageUrl}" alt="${service.name}" />
+            <p><strong>${service.name}</strong></p>
+            <p style="color: green; font-weight: bold;">${service.price}</p>
+          </a>
+        `;
         container.appendChild(div);
+
+        // Dropdown
+        const option = document.createElement("option");
+        option.value = service.learnMoreUrl;
+        option.textContent = service.name;
+        dropdown.appendChild(option);
       });
     })
     .catch(error => console.error("Error loading laptops:", error));
 });
+
+function goToLaptopPage() {
+  const selectedUrl = document.getElementById("laptopSelector").value;
+  if (selectedUrl) {
+    window.location.href = selectedUrl;
+  } else {
+    alert("Please select a laptop first.");
+  }
+}
 </script>
 
 </body>
